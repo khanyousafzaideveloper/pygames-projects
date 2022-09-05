@@ -22,6 +22,8 @@ while run:
     clock.tick(FPS)
 
     WIN.blit(GRASS, (0, 0))
+    WIN.blit(TRACK, (0,0))
+    WIN.blit(FINISH, (0,0))
 
     pygame.display.update()
 
