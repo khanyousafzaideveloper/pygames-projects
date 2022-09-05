@@ -17,6 +17,14 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Racing Game!")
 FPS = 60
 
+class AbstractCar:
+    def __init__(self, max_vel, rotation_vel):
+        self.max_vel = max_vel
+        self.vel  = 0
+        self.rotation_vel = rotation_vel
+        self.angle = 0  
+
+
 def draw(win, images):
     for img, pos in images:
         win.blit(img, pos)
