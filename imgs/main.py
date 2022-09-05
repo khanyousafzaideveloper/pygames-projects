@@ -1,4 +1,3 @@
-from operator import truediv
 import pygame
 import math
 import time
@@ -21,6 +20,11 @@ clock = pygame.time.Clock()
 
 while run:
     clock.tick(FPS)
+
+    WIN.blit(GRASS, (0, 0))
+
+    pygame.display.update()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
