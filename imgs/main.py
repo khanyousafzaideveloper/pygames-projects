@@ -1,6 +1,7 @@
 import pygame
 import math
 import time
+from utils import scale_image
 
 GRASS = pygame.image.load("imgs/grass.jpg")
 TRACK = pygame.image.load("imgs/track.png")
