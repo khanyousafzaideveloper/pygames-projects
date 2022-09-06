@@ -42,7 +42,12 @@ class AbstractCar:
         self.move()
 
     def move(self):
-        self.x += self.vel 
+        radians =  math.radians(self.angle)
+        verticle = math.cos(radians) * self.vel
+        horizontal = math.sin(radians) * self.vel
+
+        self.x -= horizontal
+        self.y -= verticle
 
 
 class PlayerCar(AbstractCar):                  
