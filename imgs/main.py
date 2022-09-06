@@ -9,6 +9,7 @@ from utils import scale_image, blit_rotate_center
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
+TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 FINISH = pygame.image.load("imgs/finish.png")
 RED_CAR = scale_image(pygame.image.load("imgs/red-car.png"), 0.55)
 GREEN_CAR = scale_image(pygame.image.load("imgs/green-car.png"), 0.55)
@@ -55,14 +56,21 @@ class AbstractCar:
         self.x -= horizontal
         self.y -= verticle
 
+    def collide(self, mask, x=0 , y=0):
+        car_mask = pygame.mask.from_surface(self.img)
+        offset = (int(self.x-x), int(self.y-y))
+        poi = mask.overlap(car_mask, offset)
+        return poi
+
+class PlayerCar(AbstractCar):
+
+    IMG = RED_CAR
+    START_POS = (180, 200)
+
     def reduce_speed(self):
         self.vel = max(self.vel - self.acceleration / 2, 0)
         self.move()    
 
-
-class PlayerCar(AbstractCar):                  
-        IMG = RED_CAR
-        START_POS = (180, 200)
 
 
 def draw(win, images, player_car):
@@ -75,6 +83,8 @@ def draw(win, images, player_car):
 def move_player(player_car):
     keys = pygame.key.get_pressed()
     moved = False
+
+
 
     if keys[pygame.K_a]:
         player_car.rotate(left=True)
@@ -108,6 +118,9 @@ while run:
             break
 
     move_player(player_car)
+
+    if player_car.collide(TRACK_BORDER_MASK) != None:
+        print("Collide")
 
 pygame.quit()        
 
