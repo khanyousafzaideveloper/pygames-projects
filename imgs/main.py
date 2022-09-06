@@ -42,6 +42,7 @@ class AbstractCar:
         self.move()
 
     def move(self):
+        self.x += self.vel 
 
 
 class PlayerCar(AbstractCar):                  
@@ -77,6 +78,8 @@ while run:
         player_car.rotate(left=True)
     if keys[pygame.K_d]:
         player_car.rotate(right=True)        
+    if keys[pygame.K_w]:
+        player_car.move_forward()        
 
 
 pygame.quit()        
