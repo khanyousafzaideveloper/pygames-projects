@@ -72,21 +72,7 @@ def draw(win, images, player_car):
     player_car.draw(win)
     pygame.display.update()
 
-
-run = True
-clock = pygame.time.Clock()
-images = [(GRASS, (0,0)), (TRACK, (0,0))]
-player_car = PlayerCar(4, 4)
-
-while run:
-    clock.tick(FPS)
-    draw(WIN, images, player_car)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-            break
-
+def move_player(player_car):
     keys = pygame.key.get_pressed()
     moved = False
 
@@ -104,6 +90,24 @@ while run:
 
     if not moved:
         player_car.reduce_speed()
+
+
+
+run = True
+clock = pygame.time.Clock()
+images = [(GRASS, (0,0)), (TRACK, (0,0))]
+player_car = PlayerCar(4, 4)
+
+while run:
+    clock.tick(FPS)
+    draw(WIN, images, player_car)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+            break
+
+    move_player(player_car)
 
 pygame.quit()        
 
