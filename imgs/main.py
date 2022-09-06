@@ -1,6 +1,3 @@
-from curses.ascii import TAB
-from email.mime import image
-from shutil import move
 import pygame
 import math
 import time
@@ -71,7 +68,9 @@ class PlayerCar(AbstractCar):
         self.vel = max(self.vel - self.acceleration / 2, 0)
         self.move()    
 
-
+    def bounce(self):
+        self.vel =- self.vel
+        self.move()
 
 def draw(win, images, player_car):
     for img, pos in images:
@@ -120,7 +119,7 @@ while run:
     move_player(player_car)
 
     if player_car.collide(TRACK_BORDER_MASK) != None:
-        print("Collide")
+        player_car.bounce()
 
 pygame.quit()        
 
