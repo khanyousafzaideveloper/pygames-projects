@@ -1,4 +1,6 @@
+from curses.ascii import TAB
 from email.mime import image
+from shutil import move
 import pygame
 import math
 import time
@@ -49,6 +51,10 @@ class AbstractCar:
         self.x -= horizontal
         self.y -= verticle
 
+    def reduce_speed(self):
+        self.vel = max(self.vel - self.acceleration / 2, 0)
+        self.move()    
+
 
 class PlayerCar(AbstractCar):                  
         IMG = RED_CAR
@@ -78,14 +84,18 @@ while run:
             break
 
     keys = pygame.key.get_pressed()
+    moved = False
 
     if keys[pygame.K_a]:
         player_car.rotate(left=True)
     if keys[pygame.K_d]:
         player_car.rotate(right=True)        
     if keys[pygame.K_w]:
+        moved = True
         player_car.move_forward()        
 
-
+    if not moved:
+        player_car.reduce_speed()
+        
 pygame.quit()        
 
