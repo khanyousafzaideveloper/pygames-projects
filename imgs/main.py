@@ -62,6 +62,11 @@ class AbstractCar:
         poi = mask.overlap(car_mask, offset)
         return poi
 
+    def reset(self):
+        self.x, self.y = self.START_POS
+        self.angle = 0 
+        self.vel = 0   
+
 class PlayerCar(AbstractCar):
 
     IMG = RED_CAR
@@ -128,7 +133,10 @@ while run:
 
     if finish_poi_collide != None:
         if finish_poi_collide[1]==0 :
-            player_car.bounce()   
+            player_car.bounce()  
+        else: 
+            player_car.reset()
+            print("Finish")     
 
 pygame.quit()        
 
