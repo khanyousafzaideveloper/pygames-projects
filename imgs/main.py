@@ -124,8 +124,10 @@ while run:
     if player_car.collide(TRACK_BORDER_MASK) != None:
         player_car.bounce()
 
-    if player_car.collide(FINISH_MASK, *FINISH_POSITIONS) != None:
-        print("Finsh")   
+    finish_poi_collide = player_car.collide(FINISH_MASK, *FINISH_POSITIONS)
+
+    if finish_poi_collide != None:
+        print(finish_poi_collide)   
 
 pygame.quit()        
 
