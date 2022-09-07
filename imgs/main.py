@@ -127,7 +127,8 @@ while run:
     finish_poi_collide = player_car.collide(FINISH_MASK, *FINISH_POSITIONS)
 
     if finish_poi_collide != None:
-        print(finish_poi_collide)   
+        if finish_poi_collide[1]==0 :
+            player_car.bounce()   
 
 pygame.quit()        
 
