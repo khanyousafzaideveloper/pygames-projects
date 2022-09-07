@@ -29,7 +29,7 @@ class AbstractCar:
         self.max_vel = max_vel
         self.vel  = 0
         self.rotation_vel = rotation_vel
-        self.angle = 180
+        self.angle = 0
         self.x, self.y = self.START_POS
         self.acceleration = 0.1
 
@@ -79,7 +79,7 @@ class PlayerCar(AbstractCar):
         self.move()    
 
     def bounce(self):
-        self.vel =- self.vel
+        self.vel = -self.vel
         self.move()
 
 class ComputerCar(AbstractCar):
@@ -98,7 +98,7 @@ class ComputerCar(AbstractCar):
 
     def draw(self, win):
         super().draw(win)
-        self.draw_points(win)   
+        #self.draw_points(win)   
 
     def calculate_angle(self):
         target_x , target_y  = self.path[self.current_point]
@@ -154,15 +154,15 @@ def move_player(player_car):
 
 
 
-    if keys[pygame.K_a]:
+    if keys[pygame.K_LEFT]:
         player_car.rotate(left=True)
-    if keys[pygame.K_d]:
+    if keys[pygame.K_RIGHT]:
         player_car.rotate(right=True)        
-    if keys[pygame.K_w]:
+    if keys[pygame.K_UP]:
         moved = True
         player_car.move_forward()        
     
-    if keys[pygame.K_x]:
+    if keys[pygame.K_DOWN]:
         moved = True
         player_car.move_backward() 
 
@@ -173,7 +173,7 @@ def handle_collision(player_car, computer_car):
     if player_car.collide(TRACK_BORDER_MASK) != None:
         player_car.bounce()
 
-    computer_finish_poi_collide = player_car.collide(FINISH_MASK, *FINISH_POSITIONS)
+    computer_finish_poi_collide = computer_car.collide(FINISH_MASK, *FINISH_POSITIONS)
     if computer_finish_poi_collide != None:
         player_car.reset()
         computer_car.reset()
@@ -204,6 +204,8 @@ while run:
 
     move_player(player_car)
     computer_car.move()
+
+    handle_collision(player_car, computer_car)
 
 pygame.quit()        
 
