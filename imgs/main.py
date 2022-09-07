@@ -100,7 +100,31 @@ class ComputerCar(AbstractCar):
 
     def draw(self, win):
         super().draw(win)
-        self.draw_points(win)         
+        self.draw_points(win)   
+
+    def calculate_angle(self):
+        target_x , target_y  = self.path[self.current_point]
+        x_diff = target_x -self.x
+        y_diff = target_y -self.y
+
+        if y_diff ==0:
+            desired_radian_angle = math.pi/2
+        else:
+            desired_radian_angle = math.atan(x_diff/y_diff)
+
+        if target_y > self.y:
+            desired_radian_angle += math.pi    
+
+
+
+    def move(self):
+        if self.current_point >= len(self.path):
+            return
+
+
+        self.calculate_angle()
+        self.update_path_point()
+        super().move()             
 
 def draw(win, images, player_car, computer_car):
     for img, pos in images:
@@ -109,6 +133,8 @@ def draw(win, images, player_car, computer_car):
     player_car.draw(win)
     computer_car.draw(win)
     pygame.display.update()
+
+
 
 def move_player(player_car):
     keys = pygame.key.get_pressed()
