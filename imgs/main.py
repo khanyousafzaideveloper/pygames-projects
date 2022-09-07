@@ -1,4 +1,3 @@
-import re
 import pygame
 import math
 import time
@@ -170,7 +169,23 @@ def move_player(player_car):
     if not moved:
         player_car.reduce_speed()
 
+def handle_collision(player_car, computer_car):
+    if player_car.collide(TRACK_BORDER_MASK) != None:
+        player_car.bounce()
 
+    computer_finish_poi_collide = player_car.collide(FINISH_MASK, *FINISH_POSITIONS)
+    if computer_finish_poi_collide != None:
+        player_car.reset()
+        computer_car.reset()
+
+    player_finish_poi_collide = player_car.collide(FINISH_MASK, *FINISH_POSITIONS)
+
+    if player_finish_poi_collide != None:
+        if player_finish_poi_collide[1]==0 :
+            player_car.bounce()  
+        else: 
+            player_car.reset()
+            computer_car.reset()  
 
 run = True
 clock = pygame.time.Clock()
@@ -187,22 +202,8 @@ while run:
             run = False
             break
 
-
     move_player(player_car)
     computer_car.move()
 
-    if player_car.collide(TRACK_BORDER_MASK) != None:
-        player_car.bounce()
-
-    finish_poi_collide = player_car.collide(FINISH_MASK, *FINISH_POSITIONS)
-
-    if finish_poi_collide != None:
-        if finish_poi_collide[1]==0 :
-            player_car.bounce()  
-        else: 
-            player_car.reset()
-            print("Finish")   
-
-print(computer_car.path)
 pygame.quit()        
 
