@@ -1,3 +1,4 @@
+import re
 import pygame
 import math
 import time
@@ -19,10 +20,8 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("Racing Game!")
 FPS = 60
-PATH = [(160, 133), (118, 75), (58, 124), (58, 429), (82, 502), (244, 662), (338, 741), (396, 712), 
-(408, 563), (458, 488), (559, 488), (602, 551), (608, 686), (674, 736), (752, 683), (739, 396), (689, 371),
- (454, 369), (409, 331), (439, 267), (693, 264), (744, 199), (736, 107), (681, 80), (321, 78),
-(275, 134), (276, 352), (235, 423), (181, 373), (166, 281)]
+PATH =  [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
+        (734, 399), (611, 357), (409, 343), (433, 257), (697, 258), (738, 123), (581, 71), (303, 78), (275, 377), (176, 388), (178, 260)]
 
 class AbstractCar:
 
@@ -115,7 +114,21 @@ class ComputerCar(AbstractCar):
         if target_y > self.y:
             desired_radian_angle += math.pi    
 
+        difference_in_angle = self.angle - math.degrees(desired_radian_angle)
+        if difference_in_angle >= 180:
+            difference_in_angle -= 360
 
+        if difference_in_angle > 0:
+            self.angle -= min(self.rotation_vel, abs(difference_in_angle))        
+        else:
+            self.angle += min(self.rotation_vel, abs(difference_in_angle))
+
+
+    def update_path_point(self):
+        target = self.path[self.current_point]
+        rect = pygame.Rect(self.x, self.y, self.img.get_width(), self.img.get_height())
+        if rect.collidepoint(*target):
+            self.current_point+=1
 
     def move(self):
         if self.current_point >= len(self.path):
@@ -176,6 +189,7 @@ while run:
 
 
     move_player(player_car)
+    computer_car.move()
 
     if player_car.collide(TRACK_BORDER_MASK) != None:
         player_car.bounce()
