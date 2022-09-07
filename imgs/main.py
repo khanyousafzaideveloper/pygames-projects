@@ -19,6 +19,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("Racing Game!")
 FPS = 60
+PATH = [[(160, 133), (118, 75), (58, 124), (58, 429), (82, 502), (244, 662), (338, 741), (396, 712), (408, 563), (458, 488), (559, 488), (602, 551), (608, 686), (674, 736), (752, 683), (739, 396), (689, 371), (454, 369), (409, 331), (439, 267), (693, 264), (744, 199), (736, 107), (681, 80), (321, 78), (275, 134), (276, 352), (235, 423), (181, 373), (166, 281)]]
 
 class AbstractCar:
 
@@ -82,17 +83,17 @@ class PlayerCar(AbstractCar):
 
 class ComputerCar(AbstractCar):
     IMG = GREEN_CAR
-    START_POS = (180, 200)
+    START_POS = (150, 200)
 
     def __init__(self, max_vel, rotation_vel, path=[]):
         super().__init__(max_vel, rotation_vel)
-        self.path = path
+        self.path  = path
         self.current_point =0 
         self.vel = max_vel
 
     def draw_points(self, win):
         for point in self.path:
-            pygame.draw.circle(win, (255, 0, 0), point)   
+            pygame.draw.circle(win, (255, 0, 0), point, 5)   
 
     def draw(self, win):
         super().draw(win)
@@ -134,7 +135,7 @@ clock = pygame.time.Clock()
 images = [(GRASS, (0,0)), (TRACK, (0,0)), (FINISH, FINISH_POSITIONS), (TRACK_BORDER, (0,0))]
 
 player_car = PlayerCar(4, 4)
-computer_car = ComputerCar(4,4)
+computer_car = ComputerCar(4,4, PATH)
 while run:
     clock.tick(FPS)
     draw(WIN, images, player_car, computer_car)
@@ -143,6 +144,11 @@ while run:
         if event.type == pygame.QUIT:
             run = False
             break
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            computer_car.path.append(pos)
+
 
     move_player(player_car)
 
@@ -156,7 +162,8 @@ while run:
             player_car.bounce()  
         else: 
             player_car.reset()
-            print("Finish")     
+            print("Finish")   
 
+print(computer_car.path)
 pygame.quit()        
 
