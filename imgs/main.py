@@ -254,7 +254,7 @@ while run:
     draw(WIN, images, player_car, computer_car, game_info)
 
     while not game_info.started:
-        blit_text_center(WIN, MAIN_FONT, f"press any key to start{game_info.level}!")
+        blit_text_center(WIN, MAIN_FONT, f"press any key to start level{game_info.level}!")
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
