@@ -224,7 +224,8 @@ def handle_collision(player_car, computer_car, game_info):
 
     computer_finish_poi_collide = computer_car.collide(FINISH_MASK, *FINISH_POSITIONS)
     if computer_finish_poi_collide != None:
-        blit_text_center(win, MAIN_FONT,"You lost!")
+        blit_text_center(WIN, MAIN_FONT,"You lost!")
+        pygame.display.update()
         pygame.time.wait(5000)
         game_info.reset()
         player_car.reset()
@@ -272,6 +273,13 @@ while run:
     computer_car.move()
 
     handle_collision(player_car, computer_car, game_info)
+
+    if game_info.game_finished():
+        blit_text_center(WIN, MAIN_FONT, "YOU won the game!")
+        pygame.time.wait(5000)
+        game_info.reset()
+        player_car.reset()
+        computer_car.reset()
 
 pygame.quit()        
 
