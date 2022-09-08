@@ -1,7 +1,7 @@
 import pygame
 import math
 import time
-from utils import scale_image, blit_rotate_center
+from utils import scale_image, blit_rotate_center, blit_text_center
 pygame.font.init()
 
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
@@ -52,7 +52,7 @@ class GameInfo:
     def game_level_time(self):
         if not self.started:
             return 0
-        return self.level_start_time -time.time()    
+        return round(time.time() - self.level_start_time)     
 
 
 class AbstractCar:
@@ -171,10 +171,19 @@ class ComputerCar(AbstractCar):
         self.update_path_point()
         super().move()             
 
-def draw(win, images, player_car, computer_car):
+def draw(win, images, player_car, computer_car, game_info):
     for img, pos in images:
         win.blit(img, pos)
     
+    level_text =  MAIN_FONT.render(f"Level{game_info.level}", 1, (255, 255, 255))
+    win.blit(level_text,(10, HEIGHT - level_text.get_height()- 70))
+
+    time_text =  MAIN_FONT.render(f"Time{game_info.game_level_time}", 1, (255, 255, 255))
+    win.blit(time_text,(10, HEIGHT - time_text.get_height()- 40))
+
+    vel_text =  MAIN_FONT.render(f"VEL: {round(player_car.vel, 1)}px/s", 1, (255, 255, 255))
+    win.blit(vel_text,(10, HEIGHT - vel_text.get_height()- 10))
+
     player_car.draw(win)
     computer_car.draw(win)
     pygame.display.update()
@@ -226,14 +235,22 @@ images = [(GRASS, (0,0)), (TRACK, (0,0)), (FINISH, FINISH_POSITIONS), (TRACK_BOR
 
 player_car = PlayerCar(4, 4)
 computer_car = ComputerCar(4,4, PATH)
-game_info = Game_info()
+game_info = GameInfo()
 
 while run:
     clock.tick(FPS)
-    draw(WIN, images, player_car, computer_car)
+    draw(WIN, images, player_car, computer_car, game_info)
 
     while not game_info.started:
-        pass
+        blit_text_center(WIN, MAIN_FONT, f"press any key to start{game_info.level}!")
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                break
+
+            if event.type == pygame.K_a:
+                game_info.start_level()    
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
